@@ -17,7 +17,7 @@ class DataCollection():
                 self.years = set([i for i in range(2005, 2016)])
                 break
             if len(year) == 0:
-                print("You entered blank, sequence is ended. The data from the following years will be installed:")
+                print("You entered blank, sequence is ended. The data from the following years will be loaded into memory:")
                 break
             try:
                 year = int(year)
@@ -31,7 +31,7 @@ class DataCollection():
             if len(self.years) > 10:
                 print('All data sets will be installed')
                 break
-            print(self.years)
+            print('Current set of years :' ,self.years)
         print(self.years)
 
     def get_dataframe(self):
@@ -42,4 +42,11 @@ class DataCollection():
             self.df_dict[f'df_{year}'] = pd.read_csv(f'data/{year}_data.csv')
         df = pd.concat(self.df_dict.values())
 
-        return df
+        df_json = pd.read_json(f'data/2015_codes.json')
+        causes_113 = df_json[df_json['113_cause_recode'].isnull() == False]['113_cause_recode']
+        causes_113.index = list(map(int, causes_113.index))
+        causes_113.name = '113_cause_recode_json'
+        # extract unnatural causes labels
+        unnatural_causes = causes_113.index[111:]
+
+        return (df,causes_113[unnatural_causes])

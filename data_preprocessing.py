@@ -17,9 +17,14 @@ class DataPreprocesor:
     Returns One Hot Encoded features with Converted Education Column
     """
 
-    def __init__(self, categorical, continuous, target_column = 'unnatural'):
-        self.categorical = categorical
-        self.continuous = continuous
+    def __init__(self, categorical=None, continuous= None, target_column='unnatural'):
+        if categorical == None:
+            categorical =['marital_status','sex']
+        if continuous == None:
+            continuous =['education_2003_revision','detail_age']
+
+        self.categorical = list(categorical)
+        self.continuous = list(continuous)
         self.features = self.categorical + self.continuous + [target_column]
         self.education_dict = {99: 9}
         for education_1989_revision in range(18):
@@ -48,8 +53,8 @@ class DataPreprocesor:
                 df_copy[[feature]])  # There is a difference between df_copy[[feature]] and df_copy[feature],
             returned_features = list(
                 temp.columns)  # the former gives , e.g, 'marital_status_M' instead of M. This is to avoid overlapping names and get strings instead of value M
-            df_copy[returned_features] = temp
-
+            returned_features.pop()
+            df_copy[returned_features] = temp[returned_features]
         return df_copy.drop(columns=list_of_features)
 
     def get_one_hot_coded_data(self, df):
