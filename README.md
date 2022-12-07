@@ -6,5 +6,5 @@ Project: Team Memento Mori created a binary classifier to predict whether an U.S
   
   -Step2: Download datasets from https://www.kaggle.com/datasets/cdc/mortality, and add it to data folder
   
-  -Step3: Follow the instructions on mementomory.ipynb see the results and and run the study
+  -Step3: Follow the instructions on mementomori.ipynb to see the results and and run the study
     
